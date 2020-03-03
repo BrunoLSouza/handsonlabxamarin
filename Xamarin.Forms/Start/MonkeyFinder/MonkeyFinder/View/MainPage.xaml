@@ -7,7 +7,81 @@
     mc:Ignorable="d"
     xmlns:local="clr-namespace:MonkeyFinder"
     xmlns:viewmodel="clr-namespace:MonkeyFinder.ViewModel"
-    x:Class="MonkeyFinder.View.MainPage">
+    x:Class="MonkeyFinder.View.MainPage"
+    Title="{Binding Title}">
 
+
+    <ContentPage.BindingContext>
+        <viewmodel:MonkeysViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid RowSpacing="0" ColumnSpacing="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ListView ItemsSource="{Binding Monkeys}"
+                  CachingStrategy="RecycleElement"
+                  ItemSelected="ListView_ItemSelected"
+                  HasUnevenRows="True"
+                  SeparatorVisibility="None"
+                  Grid.ColumnSpan="2">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame Visual="Material" 
+                               IsClippedToBounds="True"
+                               BackgroundColor="White"
+                               Margin="10,5"
+                               Padding="0"
+                               CornerRadius="10"
+                               HeightRequest="125">
+                            <Grid ColumnSpacing="10" Padding="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding Image}"
+                                       Aspect="AspectFill"/>
+                                <StackLayout Grid.Column="1"
+                                             Padding="10"
+                                             VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" FontSize="Large"/>
+                                    <Label Text="{Binding Location}" FontSize="Medium"/>
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Text="Search"
+                Command="{Binding GetMonkeysCommand}"
+                IsEnabled="{Binding IsNotBusy}"
+                Grid.Row="1"
+                Grid.Column="0"
+                Style="{StaticResource ButtonOutline}"
+                Margin="8"/>
+
+        <!-- Add this -->
+        <Button Text="Find Closest" 
+                Command="{Binding GetClosestCommand}"
+                IsEnabled="{Binding IsNotBusy}"
+                Grid.Row="1"
+                Grid.Column="1"
+                Style="{StaticResource ButtonOutline}"
+                Margin="8"/>
+
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="CenterAndExpand"
+                           Grid.RowSpan="2"
+                           Grid.ColumnSpan="2"/>
+    </Grid>
 
 </ContentPage>

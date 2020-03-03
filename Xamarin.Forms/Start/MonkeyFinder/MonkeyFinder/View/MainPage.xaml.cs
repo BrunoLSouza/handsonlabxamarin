@@ -20,5 +20,8 @@ namespace MonkeyFinder.View
 
             ((ListView)sender).SelectedItem = null;
         }
+
+
+
     }
 }
